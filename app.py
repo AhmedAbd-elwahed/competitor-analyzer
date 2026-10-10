@@ -58,7 +58,29 @@ if st.button("بدء التحليل 🚀"):
 
             if not df.empty:
                 st.success("تم التحليل بنجاح!")
+                
+                # عرض الجدول الرئيسي
                 st.dataframe(df, use_container_width=True)
+
+                st.markdown("---")
+                
+                # تحويل البيانات إلى صيغة Tab-Separated للنسخ المباشر المريح لـ Google Sheets
+                tsv_data = df.to_csv(index=False, sep='\t')
+                
+                st.subheader("📋 نسخ البيانات للقطها مباشرة بداخل Google Sheets")
+                st.caption("اضغط على أيقونة النسخ 📋 في زاوية المربع الأبيض بالأسفل، ثم اعمل Paste بداخل الشيت فوراً:")
+                
+                # مربع كود يحتوي تلقائياً على زر Copy بداخل Streamlit
+                st.code(tsv_data, language='text')
+
+                # زر تحميل CSV
+                csv_data = df.to_csv(index=False, encoding='utf-8-sig')
+                st.download_button(
+                    label="⬇️ تحميل البيانات كملف CSV",
+                    data=csv_data,
+                    file_name="competitor_keywords.csv",
+                    mime="text/csv"
+                )
             else:
                 st.error("لم يتم العثور على عناوين في الصفحة.")
 
